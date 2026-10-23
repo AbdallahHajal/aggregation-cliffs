@@ -23,8 +23,9 @@ An aggregation cliff is a matched molecular pair whose two members carry opposit
 | `representation_resolvability.csv` | 12 | Pairs rendered identical by each of twelve fingerprints. An upper bound on any model using only that representation. |
 | `chemfh_per_compound.csv` | 5,928 | ChemFH's seven probabilities and ten rule counts per compound, so pairs can be re-formed at a different threshold. |
 | `candidate_structures_for_measurement.csv` | 942 | Generated analogues nominated for dynamic light scattering. These carry no experimental label. |
+| `SMILES.csv` | 6,730 | Every structure in the census, one row per compound, with its pair, role, label and InChIKey. This is the ACS-labelled SMILES file. |
 
-`aggregation_cliffs_data.zip` holds the same seven CSVs in one download.
+`aggregation_cliffs_data.zip` holds the same eight CSVs in one download.
 
 Census columns: `kind`, `tanimoto`, `agg_smiles`, `non_smiles`, `agg_ik`, `non_ik`, `d_clogp`, `d_mw`, `d_tpsa`, `d_heavy`, `agg_heavy`, `non_heavy`, `agg_clogp`, `non_clogp`, `dataset`. `agg_` is the member labelled aggregator, `non_` its partner, `_ik` is the InChIKey, and `d_` differences are aggregator minus non-aggregator.
 
