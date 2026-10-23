@@ -7,7 +7,6 @@
 Data and code for:
 
 **Aggregation Cliffs in Screening Benchmarks: A Matched Molecular Pair Census and a Pair-Level Evaluation of Published Filters**
-Abdallah Abou Hajal, College of Pharmacy and AAU Health and Biomedical Research Center, Al Ain University, Abu Dhabi, UAE.
 
 An aggregation cliff is a matched molecular pair whose two members carry opposite colloidal aggregation labels. This repository holds the census of 3,365 such pairs mined from two detergent counter-screens, every filter's verdict on each member, the structures nominated for light scattering, and the code that produced all of it. Near-identical compounds carry opposite aggregation labels far more often than the benchmarks admit. Seven published filters and a plain clogP cutoff were asked about each member of a pair separately. They gave both members the same class in 90.6% to 95.6% of pairs, and none beat the clogP cutoff under an exact paired test.
 
