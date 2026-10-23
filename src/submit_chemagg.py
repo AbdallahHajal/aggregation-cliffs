@@ -13,11 +13,13 @@ Requests are throttled; this is somebody else's academic server.
 Usage: python submit_chemagg.py <chunk.sdf> [<chunk.sdf> ...]
 """
 import http.cookiejar
+import os
 import pathlib
 import re
 import ssl
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
@@ -26,15 +28,20 @@ BASE = "https://admet.scbdd.com"
 INDEX = BASE + "/ChemAGG/index/"
 POST = BASE + "/ChemAGG/calc_cf_file/"
 THROTTLE_S = 5.0
+INSECURE_ENV = "CHEMAGG_ALLOW_INSECURE_TLS"
+
 
 def _context():
-    """Verify the certificate if we can; fall back only if the server's cert is expired.
+    """Verify the certificate. Fall back only on an explicit opt-in.
 
-    As of 2026-09-29 admet.scbdd.com serves an EXPIRED certificate, so verification
-    fails and the fallback is taken. This is acceptable here only because what we send
-    is public PubChem structures and what we receive is a prediction table, neither of
-    which is confidential; nothing is authenticated and no credential is transmitted.
-    The fallback is announced rather than silent so the condition is on the record.
+    As of 2026-09-29 admet.scbdd.com served an EXPIRED certificate, and the submissions
+    behind this work were made with verification disabled. That is recorded rather than
+    hidden: what was sent is public PubChem structures and what came back is a prediction
+    table, so no credential was exposed, but an unverified channel cannot attest that the
+    table was not altered in transit.
+
+    Verification is now on by default and this fails closed. Set
+    CHEMAGG_ALLOW_INSECURE_TLS=1 to reproduce the original unverified submission.
     """
     ctx = ssl.create_default_context()
     try:
@@ -45,8 +52,13 @@ def _context():
     except urllib.error.URLError as e:
         if "CERTIFICATE_VERIFY_FAILED" not in str(e):
             raise
-        print(f"WARNING: {BASE} certificate does not verify ({str(e.reason)[:70]}); "
-              f"proceeding unverified. Public structures only, no credentials sent.")
+        if os.environ.get(INSECURE_ENV) != "1":
+            raise SystemExit(
+                f"{BASE} certificate does not verify ({str(e.reason)[:70]}).\n"
+                f"Refusing to submit over an unverified channel. To reproduce the\n"
+                f"original submission anyway, set {INSECURE_ENV}=1 and re-run.")
+        print(f"WARNING: {BASE} certificate does not verify; proceeding unverified "
+              f"because {INSECURE_ENV}=1. Public structures only, no credentials sent.")
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE

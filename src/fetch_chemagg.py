@@ -4,11 +4,49 @@ The server writes the file asynchronously and recycles temp ids, so a naive fetc
 return an empty or truncated file. This polls until the parsed row count matches the
 expected number of analogues, and refuses to save a short file silently.
 """
-import io, ssl, sys, time, urllib.request
+import hashlib, io, os, ssl, sys, time, urllib.error, urllib.request
 import pandas as pd
 
-CTX = ssl.create_default_context(); CTX.check_hostname = False; CTX.verify_mode = ssl.CERT_NONE
 BASE = "https://admet.scbdd.com/static/uploadfile/"
+INSECURE_ENV = "CHEMAGG_ALLOW_INSECURE_TLS"
+
+
+def _context():
+    """Verify the certificate. Fall back only on an explicit opt-in.
+
+    As of 2026-09-29 admet.scbdd.com served an EXPIRED certificate, and the results used
+    in this work were downloaded with verification disabled. That is recorded here rather
+    than hidden: what was sent is public PubChem structures and what came back is a
+    prediction table, so no credential was exposed, but an unverified channel cannot
+    attest that the table was not altered in transit. Each saved file is therefore
+    hashed below so a re-download can be compared against it.
+
+    Verification is now on by default and the script fails closed. Set
+    CHEMAGG_ALLOW_INSECURE_TLS=1 to reproduce the original unverified download.
+    """
+    ctx = ssl.create_default_context()
+    try:
+        urllib.request.urlopen(
+            urllib.request.Request(BASE, headers={"User-Agent": "Mozilla/5.0"}),
+            timeout=60, context=ctx).read(64)
+        return ctx
+    except urllib.error.URLError as e:
+        if "CERTIFICATE_VERIFY_FAILED" not in str(e):
+            raise
+        if os.environ.get(INSECURE_ENV) != "1":
+            raise SystemExit(
+                f"{BASE} certificate does not verify ({str(e.reason)[:70]}).\n"
+                f"Refusing to download over an unverified channel. To reproduce the\n"
+                f"original download anyway, set {INSECURE_ENV}=1 and re-run.")
+        print(f"WARNING: {BASE} certificate does not verify; proceeding unverified "
+              f"because {INSECURE_ENV}=1. Public structures only, no credentials sent.")
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
+
+
+CTX = _context()
 
 
 def fetch(name, expect, out, tries=20, wait=15):
@@ -22,6 +60,8 @@ def fetch(name, expect, out, tries=20, wait=15):
             if len(d) >= expect:
                 open(out, "wb").write(raw)
                 print(f"OK  {len(d)} rows (expected {expect}) -> {out}")
+                print(f"    source {url}")
+                print(f"    sha256 {hashlib.sha256(raw).hexdigest()}")
                 return True
             print(f"  try {i}: {len(d)}/{expect} rows, waiting {wait}s")
         except Exception as e:

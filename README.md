@@ -37,6 +37,8 @@ The analysis scripts. `mine_cliffs.py` builds the census, `representation_sweep_
 
 Four scripts read the prepared cruzain set, which is not redistributed here because it belongs to the companion work. Point `CLIFFS_SOURCE_DATA` at it, or rebuild it from PubChem AID 1476 and AID 1478 using the standardisation recipe in the Methods.
 
+One thing worth stating plainly: in September 2026 the ChemAGG server at `admet.scbdd.com` was serving an expired certificate, and the ChemAGG predictions used here were obtained with TLS verification disabled. Only public PubChem structures were sent and only a prediction table came back, so nothing confidential was exposed, but an unverified channel cannot attest that the table was unaltered in transit. The two scripts that talk to that server now verify by default and refuse to run otherwise; set `CHEMAGG_ALLOW_INSECURE_TLS=1` to reproduce the original download, and `fetch_chemagg.py` prints the SHA-256 of whatever it saves so a re-download can be compared.
+
 ## Two things to read before reusing this
 
 **The negative label is not a measurement.** In both screens a compound is recorded as a non-aggregator when no dose-response curve can be fitted with or without detergent. That records an absence of activity against one enzyme. Colloid formation was never tested. Every rate here counts label disagreement rather than measured physical discontinuity, and the distinction matters for anything built on these files.
