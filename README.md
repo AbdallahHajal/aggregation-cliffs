@@ -2,6 +2,8 @@
 
 ![Aggregation cliffs](figures/graphical_abstract.png)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23600407.svg)](https://doi.org/10.5281/zenodo.23600407)
+
 Data and code for:
 
 **Aggregation Cliffs in Screening Benchmarks: A Matched Molecular Pair Census and a Pair-Level Evaluation of Published Filters**
@@ -71,4 +73,5 @@ Code under MIT, data under CC-BY-4.0. See `LICENSE` and `LICENSE-DATA`.
 
 ## Citation
 
-See `CITATION.cff`. Cite the paper, and cite the archived release by its DOI if you use the data.
+See `CITATION.cff`. Cite the paper, and cite this archived release by its DOI if you use the data:
+`10.5281/zenodo.23600407` pins this exact version; `10.5281/zenodo.23600406` always resolves to the newest one.

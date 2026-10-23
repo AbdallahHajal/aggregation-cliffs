@@ -6,7 +6,14 @@ authors:
     given-names: "Abdallah"
     affiliation: "College of Pharmacy, Al Ain University, Abu Dhabi, United Arab Emirates"
 license: MIT
+doi: "10.5281/zenodo.23600407"
+version: "1.0.0"
+date-released: "2026-10-23"
 repository-code: "https://github.com/AbdallahHajal/aggregation-cliffs"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23600406"
+    description: "Concept DOI, resolves to the latest version"
 preferred-citation:
   type: article
   title: "Aggregation Cliffs in Screening Benchmarks: A Matched Molecular Pair Census and a Pair-Level Evaluation of Published Filters"
