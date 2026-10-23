@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite the paper."
+title: "Aggregation Cliffs: census and pair-level filter evaluation"
+authors:
+  - family-names: "Abou Hajal"
+    given-names: "Abdallah"
+    affiliation: "College of Pharmacy, Al Ain University, Abu Dhabi, United Arab Emirates"
+license: MIT
+repository-code: "https://github.com/AbdallahHajal/aggregation-cliffs"
+preferred-citation:
+  type: article
+  title: "Aggregation Cliffs in Screening Benchmarks: A Matched Molecular Pair Census and a Pair-Level Evaluation of Published Filters"
+  authors:
+    - family-names: "Abou Hajal"
+      given-names: "Abdallah"
+  year: 2026

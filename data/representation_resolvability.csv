@@ -1,0 +1,13 @@
+representation,bits,identical_pairs,pct_identical,median_tanimoto,pairs_above_0.95
+Physicochemical,2048,1033,30.7,0.9592,2081
+MACCS (166b),166,731,21.72,0.9787,2455
+PubChem (881b),881,529,15.72,0.9786,2808
+"FCFP4 (features, r2)",2048,504,14.98,0.9318,1253
+Topological torsion,2048,237,7.04,0.9242,964
+"ECFP4 (2048b, r2)",2048,170,5.05,0.8793,489
+ECFP4 unfolded (32768b),32768,169,5.02,0.875,484
+Avalon,2048,74,2.2,0.9708,2339
+RDKit path,2048,45,1.34,0.9749,2507
+ECFP4 counts,2048,33,0.98,0.878,397
+"ECFP6 (2048b, r3)",2048,13,0.39,0.83,198
+Atom pair,2048,0,0.0,0.8614,252
